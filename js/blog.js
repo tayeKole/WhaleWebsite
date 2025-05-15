@@ -2,37 +2,12 @@
 const blogPosts = [
     {
         title: "example",
-        excerpt: "example.",
+        excerpt: "the reason we love.",
         image: "Images/Polo.png",
         category: "example",
-        author: {
-            name: "Author Name",
-            image: "Images/Polo.png"
-        },
+        author: "Author Name",
         date: "Date"
     },
-    {
-        title: "example",
-        excerpt: "example",
-        image: "Images/Polo.png",
-        category: "example",
-        author: {
-            name: "Author Name",
-            image: "Images/Polo.png"
-        },
-        date: "Date"
-    },
-    {
-        title: "example",
-        excerpt: "example",
-        image: "Images/Polo.png",
-        category: "example",
-        author: {
-            name: "Author Name",
-            image: "Images/Polo.png",
-        },
-        date: "Date"
-    }
 ];
 
 // Function to create blog post HTML
@@ -44,8 +19,7 @@ function createBlogPostHTML(post) {
             <h2>${post.title}</h2>
             <p class="excerpt">${post.excerpt}</p>
             <div class="meta">
-                <img src="${post.author.image}" alt="${post.author.name}" class="author-img">
-                <span>${post.author.name}</span>
+                <span>${post.author}</span>
                 <span>${post.date}</span>
             </div>
         </article>
@@ -57,4 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const postsGrid = document.querySelector('.posts-grid');
     const postsHTML = blogPosts.map(post => createBlogPostHTML(post)).join('');
     postsGrid.innerHTML = postsHTML;
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const username = localStorage.getItem("loggedInUser");
+
+  if (username === "RobColesky") {
+    document.getElementById("postBlogLink").style.display = "inline-block";
+    document.getElementById("postlistinglink").style.display = "inline-block";
+    document.getElementById("loginLink").style.display = "none";
+  } else {
+    document.getElementById("postBlogLink").style.display = "none";
+    document.getElementById("postlistinglink").style.display = "none";
+    document.getElementById("loginLink").style.display = "inline-block";
+  }
 });

@@ -131,6 +131,44 @@ nav {
     }
 }
 
+.input{
+    font-size: 20px;
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 5px;
+}
+
+.wrap-input {
+    display: flex;
+    align-items: top;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+
+.label-input {
+    font-family: 'Inter', sans-serif; /* or any other font you want */
+    font-size: 20px; /* optional: change size */
+    font-weight: 600;    
+}
+
+.textarea {
+    background-color:rgb(227, 232, 238);
+    font-family: 'Inter', sans-serif;
+    font-size: 20px !important;
+    padding: 1em;
+    border-radius: 10px;
+    border: 2px solid transparent;
+}
+
+.Post-form-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 30px;
+    position: center;
+    width: 200px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
 #adminPanel {
   display: none;
 }

@@ -300,3 +300,7 @@ footer {
         font-size: 36px;
     }
 }
+
+#adminPanel {
+  display: none;
+}
