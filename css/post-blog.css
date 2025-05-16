@@ -1,3 +1,49 @@
+/* Targets the outer wrapper */
+.wrap-input {
+  position: relative;
+  margin-bottom: 23px;
+}
+
+/* Adds some validation styling (you can customize this) */
+.validate-input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Space below the input */
+.m-b-23 {
+  margin-bottom: 23px;
+}
+
+/* Label styling */
+.label-input {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Input box styling */
+.input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+#PostButton {
+    display: flex;
+    font-size: 2em;
+    font-family: 'Inter', sans-serif;
+    border: 1.5px solid #ccc;
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
 .navbar {
     position: fixed;
     top: 0;
@@ -68,12 +114,6 @@ nav {
     color: var(--gray-500);
 }
 
-.posts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 40px;
-    margin-bottom: 80px;
-}
 
 .blog-post {
     transition: transform 0.3s;
@@ -83,12 +123,6 @@ nav {
     transform: translateY(-5px);
 }
 
-.blog-post img {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    margin-bottom: 20px;
-}
 
 .blog-post .category {
     font-size: 14px;
@@ -146,9 +180,11 @@ nav {
 
 
 .label-input {
+    display: flex;
     font-family: 'Inter', sans-serif; /* or any other font you want */
     font-size: 20px; /* optional: change size */
-    font-weight: 600;    
+    font-weight: 600;
+    justify-content: center;    
 }
 
 .textarea {

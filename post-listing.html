@@ -6,7 +6,7 @@
     <title>Shop | Clay To Life</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
-    <link href="css/shop.css" rel="stylesheet">
+    <link href="css/Post-Listing.css" rel="stylesheet">
 </head>
 <body>
     <header class="navbar">
@@ -31,73 +31,67 @@
             </div>
         </header>
 
-        <section class="shop-filters">
-            <div class="container">
-                <div class="filters-wrapper">
-                    <div class="categories">
-                        <button class="category-btn active" data-category="all">All Products</button>
-                        <button class="category-btn" data-category="Whales">Whales</button>
-                        <button class="category-btn" data-category="Other">Other</button>
-                        <button class="category-btn" data-category="Other">Other</button>
-                    </div>
-                    <div class="sort">
-                        <select id="sort-select">
-                            <option value="featured">Featured</option>
-                            <option value="price-low-high">Price: Low to High</option>
-                            <option value="price-high-low">Price: High to Low</option>
-                            <option value="newest">Newest</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="products-grid">
-            <div class="container">
-                <div class="products">
-                    <!-- Products will be dynamically loaded here -->
-                </div>
-            </div>
-        </section>
-
-        <section class="newsletter">
-            <div class="container">
-                <h2>Join Our Newsletter</h2>
-                <p>Stay updated with our latest products and offers.</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Your email address" required>
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>Clay To Life</h3>
-                    <p>A minimalist approach to design focusing on simplicity and function.</p>
+            <div class="filters-wrapper">
+                <div class="posts-wrap"></div>    
+                    <!-- Shop Product name -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "name is required">
+                        <span class="label-input">Product Name</span>
+                        <input class="input" type="text" name="name" placeholder="Enter your product name">
+                    </div>
+
+                    <!-- Shop Price -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "Price is required">
+                        <span class="label-input">Price</span>
+                        <input class="input" type="text" name="price" placeholder="Enter a number" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div> 
+
+                    <!-- Shop category -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "category is required">
+                        <span class="label-input">Category</span>
+                        <input class="input" type="text" name="category" placeholder="AKA Whale, Handbag, ceramic">
+                    </div> 
+
+                    <!-- Blog Image -->
+                    <div class="wrap-input validate-input m-b-23" data-validate="Image is required">
+                    <span class="label-input">Images(Max 5)</span>
+                    <input 
+                        class="input" 
+                        type="file" 
+                        name="image" 
+                        accept="image/*" 
+                        multiple>
+                    </div>
+                    <!-- Shop Number -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "Number is required">
+                        <span class="label-input">Phone Number</span>
+                        <input class="input" type="text" name="PhoneNumber" placeholder="Enter your Cellphone number" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div> 
+                    <!-- Shop email -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "email is required">
+                        <span class="label-input">Email</span>
+                        <input class="input" type="text" name="email" placeholder="Please enter a email for buyers to contact you at">
+                    </div>
+                    <!-- Blog text -->
+                    <div class="wrap-input validate-input m-b-23" data-validate = "Text is required">
+						<span class="label-input">Brief description</span>
+						<textarea class="textarea" id="text-area-product-ds" name="textarea" rows="15" cols="50" placeholder="Description..."></textarea>
+					</div>
+                    <!--Shop Button-->
+                    <div class="container-post-form-btn">
+						<div class="wrap-post-form-btn">
+							<div class="post-form-bgbtn"></div>
+							<button id="PostButton" class="Post-form-btn">
+							    Post Product
+							</button>
+						</div>
+					</div>
                 </div>
-                <div class="footer-links">
-                    <h4>Navigation</h4>
-                    <a href="index.html">Home</a>
-                    <a href="blog.html">Blog</a>
-                    <a href="shop.html">Shop</a>
-                </div>
-                <div class="footer-links">
-                    <h4>Company</h4>
-                    <a href="#">About</a>
-                    <a href="#">Contact</a>
-                    <a href="#">Privacy Policy</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Clay To Life. All rights reserved.</p>
             </div>
         </div>
-    </footer>
 
-    <script src="js/shop.js"></script>
+    </main>
+    <script type="module" src="js/Post-Listing.js"></script>
+
 </body>
 </html>

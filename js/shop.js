@@ -39,7 +39,6 @@ function createProductHTML(product) {
                 <div class="product-overlay">
                     <div class="product-actions">
                         <button class="product-action-btn">Quick View</button>
-                        <button class="product-action-btn">Add to Cart</button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,80 @@
+/* styles.css or ReadBlog.css */
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.container {
+  padding-top: 100px; /* pushes content down */
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--black);
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--black);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: var(--white);
+    padding: 20px 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--black);
+}
+
+nav {
+    display: flex;
+    gap: 32px;
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+
+body.read-blog footer {
+  background: #343333;
+  height: 175px;
+  padding-top: 20px;
+}
+
+
