@@ -6,7 +6,7 @@ const firebaseConfig = {
   authDomain: "clay-to-life.firebaseapp.com",
   databaseURL: "https://clay-to-life-default-rtdb.firebaseio.com",
   projectId: "clay-to-life",
-  storageBucket: "clay-to-life.appspot.com",
+  storageBucket: "clay-to-life.firebasestorage.app",
   messagingSenderId: "88013123074",
   appId: "1:88013123074:web:c5c57cac389c14a620011b",
   measurementId: "G-EDNMGKZKY2"

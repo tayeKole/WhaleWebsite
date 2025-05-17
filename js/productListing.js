@@ -25,12 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Get DOM elements
   const productNameEl = document.getElementById("productName");
   const productCategoryEl = document.getElementById("productCategory");
   const productPriceEl = document.getElementById("productPrice");
   const productAuthorEl = document.getElementById("productAuthor");
   const productPhoneEl = document.getElementById("productPhone");
   const productEmailEl = document.getElementById("productEmail");
+  const productWeightEl = document.getElementById("productWeight");  // New
+  const productDimensionsEl = document.getElementById("productDimensions"); // New
   const productDescriptionEl = document.getElementById("productDescription");
   const carouselImagesContainer = document.getElementById("carouselImages");
   const prevBtn = document.getElementById("prevBtn");
@@ -39,11 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentImageIndex = 0;
   let images = [];
 
-  // Show image at index in carousel
   function showImage(index) {
     const imgs = carouselImagesContainer.querySelectorAll("img");
     if (imgs.length === 0) return;
-
     imgs.forEach((img, i) => {
       img.style.display = i === index ? "block" : "none";
     });
@@ -61,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
     showImage(currentImageIndex);
   });
 
-  // Fetch product data from Firebase
   const dbRef = ref(db);
   get(child(dbRef, `Products/${productId}`))
     .then(snapshot => {
@@ -70,16 +70,20 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "index.html";
         return;
       }
+
       const data = snapshot.val();
 
+      // Basic info
       productNameEl.textContent = data.Name || "";
       productCategoryEl.textContent = `Category: ${data.Category || ""}`;
       productPriceEl.textContent = `Price: R${parseFloat(data.Price || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}`;
       productAuthorEl.textContent = `Author: ${data.Author || ""}`;
       productPhoneEl.textContent = `Phone: ${data.PhoneNumber || ""}`;
       productEmailEl.textContent = `Email: ${data.Email || ""}`;
+      productWeightEl.textContent = `Weight: ${data.Weight || "N/A"}`; // New
+      productDimensionsEl.textContent = `Dimensions (LxWxH): ${data.LxWxH || "N/A"}`; // New
 
-      // Load description text from TextFileUrl (Firebase Storage URL)
+      // Description
       if (data.TextFileUrl) {
         fetch(data.TextFileUrl)
           .then(res => res.text())
@@ -94,32 +98,28 @@ document.addEventListener("DOMContentLoaded", () => {
         productDescriptionEl.textContent = "No description available.";
       }
 
-      // Images array
+      // Images
       images = Array.isArray(data.ImageUrls) && data.ImageUrls.length > 0
         ? data.ImageUrls
         : ["Images/default.png"];
-
-      // Clear previous images if any
       carouselImagesContainer.innerHTML = "";
 
-      // Create image elements inside carouselImagesContainer
       images.forEach((url, index) => {
         const img = document.createElement("img");
         img.src = url;
-        img.style.display = "none"; // hide all initially
+        img.style.display = "none";
         img.style.maxWidth = "100%";
         img.style.maxHeight = "400px";
         img.alt = data.Name || "Product Image";
         carouselImagesContainer.appendChild(img);
       });
 
-      // Show the first image initially
       currentImageIndex = 0;
       showImage(currentImageIndex);
     })
     .catch(error => {
-      console.error(error);
-      alert("Error loading product.");
+      console.error("Firebase Database Error:", error);
+      alert("Error loading product from database.");
       window.location.href = "index.html";
     });
 });

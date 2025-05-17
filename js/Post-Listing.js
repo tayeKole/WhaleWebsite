@@ -21,10 +21,9 @@ const db = getDatabase(app);
 const storage = getStorage(app);
 const auth = getAuth(app);
 
-// 🔐 Protect Page Access by admin email
+// 🔐 Restrict access to admin
 onAuthStateChanged(auth, (user) => {
   if (user && user.email === "rcolesky@gmail.com") {
-    // Show admin-only nav links
     document.getElementById("postBlogLink").style.display = "inline-block";
     document.getElementById("postlistinglink").style.display = "inline-block";
     document.getElementById("loginLink").style.display = "none";
@@ -45,15 +44,29 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageInput = document.querySelector('input[name="image"]');
   imageInput.addEventListener("change", () => validateFileLimit(imageInput));
 
-  const writeBlogPost = (ProductId, Name, Price, Category, Author, PhoneNumber, Email, TextFileUrl, ImageUrls) => {
-    const dbReference = ref(db, 'Products/' + ProductId);
-    return set(dbReference, {
+  const writeBlogPost = (
+    ProductId,
+    Name,
+    Price,
+    Category,
+    Author,
+    PhoneNumber,
+    Email,
+    Weight,
+    LxWxH,
+    TextFileUrl,
+    ImageUrls
+  ) => {
+    const dbRef = ref(db, 'Products/' + ProductId);
+    return set(dbRef, {
       Name,
       Price,
       Category,
       Author,
       PhoneNumber,
       Email,
+      Weight,
+      LxWxH,
       TextFileUrl,
       ImageUrls
     });
@@ -97,14 +110,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const Category = document.querySelector('input[name="category"]').value.trim();
     const PhoneNumber = document.querySelector('input[name="PhoneNumber"]').value.trim();
     const Email = document.querySelector('input[name="email"]').value.trim();
+    const Weight = document.querySelector('input[name="weight"]').value.trim();
+    const LxWxH = document.querySelector('input[name="LxWxH"]').value.trim();
 
-    // Use admin email as Author or fallback to "Anonymous"
     const Author = auth.currentUser?.email || "Anonymous";
-
-    const imageInput = document.querySelector('input[name="image"]');
     const imageFiles = imageInput.files;
 
-    if (!Name || !Price || !Text || !Category || !PhoneNumber || !Email) {
+    if (!Name || !Price || !Text || !Category || !PhoneNumber || !Email || !Weight || !LxWxH) {
       alert("Please fill out all fields.");
       postButton.disabled = false;
       postButton.textContent = "Post Product";
@@ -121,8 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const imageUrls = await handleImageUpload(imageFiles, Name);
       const textUrl = await uploadTextFile(Name, Text);
-      await writeBlogPost(Name, Name, Price, Category, Author, PhoneNumber, Email, textUrl, imageUrls);
-      
+      await writeBlogPost(
+        Name,
+        Name,
+        Price,
+        Category,
+        Author,
+        PhoneNumber,
+        Email,
+        Weight,
+        LxWxH,
+        textUrl,
+        imageUrls
+      );
       alert("Product posted successfully!");
       window.location.href = "index.html";
     } catch (err) {
