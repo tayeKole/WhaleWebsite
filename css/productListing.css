@@ -1,0 +1,131 @@
+/* Container for product details */
+#productDetails {
+  max-width: 700px;
+  margin: 100px auto 60px; /* space for fixed navbar */
+  padding: 30px 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  font-family: 'Inter', sans-serif;
+  color: #222;
+}
+
+/* Product Title */
+#productName {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+  color: #111;
+  line-height: 1.2;
+}
+
+/* Product Meta (category, price, author etc) */
+#productCategory,
+#productPrice,
+#productAuthor,
+#productPhone,
+#productEmail {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #555;
+  margin: 6px 0;
+  letter-spacing: 0.02em;
+}
+
+/* Highlight price with a bit more weight and spacing */
+#productPrice {
+  font-weight: 700;
+  color: #222;
+  font-size: 1.2rem;
+  margin-top: 16px;
+}
+
+/* Description with nice spacing */
+#productDescription {
+  margin-top: 24px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #444;
+  white-space: pre-wrap;
+  letter-spacing: 0.01em;
+}
+
+/* Carousel container */
+.carousel {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto 32px;
+  overflow: visible;    /* Allow images to fully show */
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background: #fff;      /* Optional: white background so contain works nicely */
+  padding: 10px 0;       /* Give some vertical breathing room */
+}
+
+
+/* Carousel images flex container */
+.carousel-images {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Individual images */
+.carousel-images img {
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 14px;
+  object-fit: contain;    /* Change from cover to contain */
+  aspect-ratio: auto;     /* Let image keep its natural aspect */
+  max-height: 400px;      /* Limit max height */
+  background-color: #f9f9f9; /* Optional: light background behind images */
+  user-select: none;
+}
+
+
+/* Carousel buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  padding: 14px;
+  z-index: 2;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.carousel-btn:hover {
+  background-color: rgba(0,0,0,0.65);
+}
+
+#prevBtn {
+  left: 14px;
+}
+
+#nextBtn {
+  right: 14px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  #productDetails {
+    margin: 80px 16px 40px;
+    padding: 24px 16px;
+  }
+  #productName {
+    font-size: 1.8rem;
+  }
+  #productPrice {
+    font-size: 1rem;
+  }
+  .carousel {
+    max-width: 100%;
+  }
+}

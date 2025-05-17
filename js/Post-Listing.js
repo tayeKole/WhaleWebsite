@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-storage.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -8,7 +9,7 @@ const firebaseConfig = {
   authDomain: "clay-to-life.firebaseapp.com",
   databaseURL: "https://clay-to-life-default-rtdb.firebaseio.com",
   projectId: "clay-to-life",
-  storageBucket: "clay-to-life.appspot.com",
+  storageBucket: "clay-to-life.firebasestorage.app",
   messagingSenderId: "88013123074",
   appId: "1:88013123074:web:c5c57cac389c14a620011b",
   measurementId: "G-EDNMGKZKY2"
@@ -18,6 +19,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const storage = getStorage(app);
+const auth = getAuth(app);
+
+// 🔐 Protect Page Access by admin email
+onAuthStateChanged(auth, (user) => {
+  if (user && user.email === "rcolesky@gmail.com") {
+    // Show admin-only nav links
+    document.getElementById("postBlogLink").style.display = "inline-block";
+    document.getElementById("postlistinglink").style.display = "inline-block";
+    document.getElementById("loginLink").style.display = "none";
+  } else {
+    alert("Access denied. Only the admin can access this page.");
+    window.location.href = "login.html";
+  }
+});
 
 const validateFileLimit = (input) => {
   if (input.files.length > 5) {
@@ -45,9 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const uploadImage = async (imageFile, productId) => {
-    const storageReference = storageRef(storage, 'images/' + productId + '/' + imageFile.name);
+    const storageReference = storageRef(storage, 'ProductsDescription/' + productId + '/' + imageFile.name);
     await uploadBytes(storageReference, imageFile);
-    return getDownloadURL(storageReference);
+    const url = await getDownloadURL(storageReference);
+    console.log("Uploaded Image URL:", url);
+    return url;
   };
 
   const handleImageUpload = async (files, productId) => {
@@ -70,23 +87,34 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("PostButton").addEventListener("click", async (e) => {
     e.preventDefault();
 
+    const postButton = document.getElementById("PostButton");
+    postButton.disabled = true;
+    postButton.textContent = "Posting...";
+
     const Name = document.querySelector('input[name="name"]').value.trim();
     const Price = document.querySelector('input[name="price"]').value.trim();
     const Text = document.querySelector('textarea[name="textarea"]').value.trim();
     const Category = document.querySelector('input[name="category"]').value.trim();
     const PhoneNumber = document.querySelector('input[name="PhoneNumber"]').value.trim();
     const Email = document.querySelector('input[name="email"]').value.trim();
-    const Author = localStorage.getItem("loggedInUser") || "Anonymous";
+
+    // Use admin email as Author or fallback to "Anonymous"
+    const Author = auth.currentUser?.email || "Anonymous";
+
     const imageInput = document.querySelector('input[name="image"]');
     const imageFiles = imageInput.files;
 
     if (!Name || !Price || !Text || !Category || !PhoneNumber || !Email) {
       alert("Please fill out all fields.");
+      postButton.disabled = false;
+      postButton.textContent = "Post Product";
       return;
     }
 
     if (imageFiles.length === 0 || imageFiles.length > 5) {
       alert("Please upload between 1 and 5 images.");
+      postButton.disabled = false;
+      postButton.textContent = "Post Product";
       return;
     }
 
@@ -94,17 +122,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const imageUrls = await handleImageUpload(imageFiles, Name);
       const textUrl = await uploadTextFile(Name, Text);
       await writeBlogPost(Name, Name, Price, Category, Author, PhoneNumber, Email, textUrl, imageUrls);
+      
       alert("Product posted successfully!");
       window.location.href = "index.html";
     } catch (err) {
       console.error("Error:", err);
       alert("Error uploading product. Please try again.");
+      postButton.disabled = false;
+      postButton.textContent = "Post Product";
     }
   });
-
-  // Toggle nav links based on user
-  const username = localStorage.getItem("loggedInUser");
-  document.getElementById("postBlogLink").style.display = username === "RobColesky" ? "inline-block" : "none";
-  document.getElementById("postlistinglink").style.display = username === "RobColesky" ? "inline-block" : "none";
-  document.getElementById("loginLink").style.display = username === "RobColesky" ? "none" : "inline-block";
 });

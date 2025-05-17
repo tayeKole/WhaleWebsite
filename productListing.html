@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Clay To Life</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="css/productListing.css" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Clay To Life</a>
+            <nav>
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+                <a href="shop.html" class="nav-link">Shop</a>
+                <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                <a href="post-blog.html" class="nav-link" id="postBlogLink" style="display:none;">Upload Blog</a>
+                <a href="post-listing.html" class="nav-link" id="postlistinglink" style="display:none;">Upload Product</a>
+            </nav>
+        </div>
+    </header>
+
+    
+    <div id="productDetails">
+        <h2 id="productName"></h2>
+        <div class="carousel" id="imageCarousel">
+        <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
+        <div class="carousel-images" id="carouselImages"></div>
+        <button class="carousel-btn next" id="nextBtn">&#10095;</button>
+        </div>
+        <p id="productCategory"></p>
+        <p id="productPrice"></p>
+        <p id="productAuthor"></p>
+        <p id="productPhone"></p>
+        <p id="productEmail"></p>
+        <div id="productDescription"></div>
+    </div>
+    
+   
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Clay To Life</h3>
+                    <p>A minimalist approach to design focusing on simplicity and function.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <a href="index.html">Home</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="shop.html">Shop</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Clay To Life. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/productListing.js"></script>
+</body>
+</html>

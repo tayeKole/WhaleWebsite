@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBdcMrmOKTZB68HI9fKT-z0WAEvSM0x-h8",
@@ -14,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
 async function loadBlogPosts() {
   const dbRef = ref(db);
@@ -56,26 +58,26 @@ function createBlogPostHTML(post) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Load and display blog posts
+  // Load blog posts
   const postsGrid = document.querySelector('.posts-grid');
   const blogPosts = await loadBlogPosts();
 
   if (blogPosts.length === 0) {
     postsGrid.innerHTML = '<p>No posts available.</p>';
   } else {
-    const postsHTML = blogPosts.map(post => createBlogPostHTML(post)).join('');
-    postsGrid.innerHTML = postsHTML;
+    postsGrid.innerHTML = blogPosts.map(createBlogPostHTML).join('');
   }
 
-  // Show/hide navigation links based on login
-  const username = localStorage.getItem("loggedInUser");
-  if (username === "RobColesky") {
-    document.getElementById("postBlogLink").style.display = "inline-block";
-    document.getElementById("postlistinglink").style.display = "inline-block";
-    document.getElementById("loginLink").style.display = "none";
-  } else {
-    document.getElementById("postBlogLink").style.display = "none";
-    document.getElementById("postlistinglink").style.display = "none";
-    document.getElementById("loginLink").style.display = "inline-block";
-  }
+  // Show/hide nav links based on Firebase login & admin email
+  onAuthStateChanged(auth, (user) => {
+    if (user && user.email === "rcolesky@gmail.com") {  // <-- Admin email here
+      document.getElementById("postBlogLink").style.display = "inline-block";
+      document.getElementById("postlistinglink").style.display = "inline-block";
+      document.getElementById("loginLink").style.display = "none";
+    } else {
+      document.getElementById("postBlogLink").style.display = "none";
+      document.getElementById("postlistinglink").style.display = "none";
+      document.getElementById("loginLink").style.display = "inline-block";
+    }
+  });
 });
