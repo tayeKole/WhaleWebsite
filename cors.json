@@ -1,8 +1,8 @@
 [
   {
-    "origin": ["http://127.0.0.1:63925", "http://localhost:63925"],
-    "method": ["GET", "POST", "PUT", "OPTIONS"],
+    "origin": ["http://127.0.0.1:8080"],
+    "method": ["GET", "HEAD"],
     "maxAgeSeconds": 3600,
-    "responseHeader": ["Content-Type", "Authorization"]
+    "responseHeader": ["Content-Type"]
   }
 ]

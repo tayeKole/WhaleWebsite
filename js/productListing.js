@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
-// Firebase config
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBdcMrmOKTZB68HI9fKT-z0WAEvSM0x-h8",
   authDomain: "clay-to-life.firebaseapp.com",
@@ -13,12 +13,13 @@ const firebaseConfig = {
   measurementId: "G-EDNMGKZKY2"
 };
 
-// Init Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 document.addEventListener("DOMContentLoaded", () => {
   const productId = localStorage.getItem("selectedProductId");
+
   if (!productId) {
     alert("No product selected.");
     window.location.href = "index.html";
@@ -32,12 +33,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const productAuthorEl = document.getElementById("productAuthor");
   const productPhoneEl = document.getElementById("productPhone");
   const productEmailEl = document.getElementById("productEmail");
-  const productWeightEl = document.getElementById("productWeight");  // New
-  const productDimensionsEl = document.getElementById("productDimensions"); // New
+  const productWeightEl = document.getElementById("productWeight");
+  const productDimensionsEl = document.getElementById("productDimensions");
   const productDescriptionEl = document.getElementById("productDescription");
   const carouselImagesContainer = document.getElementById("carouselImages");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
+
+  // Ensure all required DOM elements exist
+  if (
+    !productNameEl || !productCategoryEl || !productPriceEl || !productAuthorEl ||
+    !productPhoneEl || !productEmailEl || !productWeightEl || !productDimensionsEl ||
+    !productDescriptionEl || !carouselImagesContainer || !prevBtn || !nextBtn
+  ) {
+    console.error("❌ One or more required DOM elements are missing from the page.");
+    alert("Page is missing required elements. Please contact support.");
+    return;
+  }
 
   let currentImageIndex = 0;
   let images = [];
@@ -63,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const dbRef = ref(db);
+
   get(child(dbRef, `Products/${productId}`))
     .then(snapshot => {
       if (!snapshot.exists()) {
@@ -73,22 +86,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = snapshot.val();
 
-      // Basic info
-      productNameEl.textContent = data.Name || "";
-      productCategoryEl.textContent = `Category: ${data.Category || ""}`;
+      // Fill product info
+      productNameEl.textContent = data.Name || "Unnamed";
+      productCategoryEl.textContent = `Category: ${data.Category || "N/A"}`;
       productPriceEl.textContent = `Price: R${parseFloat(data.Price || 0).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}`;
-      productAuthorEl.textContent = `Author: ${data.Author || ""}`;
-      productPhoneEl.textContent = `Phone: ${data.PhoneNumber || ""}`;
-      productEmailEl.textContent = `Email: ${data.Email || ""}`;
-      productWeightEl.textContent = `Weight: ${data.Weight || "N/A"}`; // New
-      productDimensionsEl.textContent = `Dimensions (LxWxH): ${data.LxWxH || "N/A"}`; // New
+      productAuthorEl.textContent = `Author: ${data.Author || "N/A"}`;
+      productPhoneEl.textContent = `Phone: ${data.PhoneNumber || "N/A"}`;
+      productEmailEl.textContent = `Email: ${data.Email || "N/A"}`;
+      productWeightEl.textContent = `Weight: ${data.Weight || "N/A"}`;
+      productDimensionsEl.textContent = `Dimensions (LxWxH): ${data.LxWxH || "N/A"}`;
 
-      // Description
+      // Load description
       if (data.TextFileUrl) {
         fetch(data.TextFileUrl)
           .then(res => res.text())
           .then(text => {
-            productDescriptionEl.textContent = text;
+            productDescriptionEl.innerHTML = text.replace(/\n/g, "<br>");
           })
           .catch(err => {
             productDescriptionEl.textContent = "Description could not be loaded.";
@@ -98,28 +111,41 @@ document.addEventListener("DOMContentLoaded", () => {
         productDescriptionEl.textContent = "No description available.";
       }
 
-      // Images
+      // Load images
       images = Array.isArray(data.ImageUrls) && data.ImageUrls.length > 0
         ? data.ImageUrls
         : ["Images/default.png"];
+
       carouselImagesContainer.innerHTML = "";
 
-      images.forEach((url, index) => {
+      images.forEach((url) => {
         const img = document.createElement("img");
         img.src = url;
+        img.alt = data.Name || "Product Image";
         img.style.display = "none";
         img.style.maxWidth = "100%";
         img.style.maxHeight = "400px";
-        img.alt = data.Name || "Product Image";
+
+        // Fallback image
+        img.onerror = () => {
+          img.src = "Images/default.png";
+        };
+
         carouselImagesContainer.appendChild(img);
       });
 
       currentImageIndex = 0;
       showImage(currentImageIndex);
+
+      // Hide nav if only 1 image
+      if (images.length <= 1) {
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+      }
     })
     .catch(error => {
-      console.error("Firebase Database Error:", error);
-      alert("Error loading product from database.");
+      console.error("Firebase Database Error:", error.message, error);
+      alert("Error loading product: " + error.message);
       window.location.href = "index.html";
     });
 });

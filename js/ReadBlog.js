@@ -15,7 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Helper to get query parameter
+// Helper to get query parameter from URL
 function getQueryParam(name) {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get(name);
@@ -44,16 +44,22 @@ async function loadBlogPost() {
       return;
     }
 
-    // Fetch text content from Firebase Storage
+    // Fetch text content from Firebase Storage URL
     const textResponse = await fetch(post.TextFileUrl);
     const textContent = await textResponse.text();
 
-    // Fill in the content
-    document.getElementById("blog-title").textContent = post.Title;
-    document.getElementById("blog-author").textContent = post.Author;
-    document.getElementById("blog-date").textContent = new Date(post.postDate).toLocaleDateString();
-    document.getElementById("blog-image").src = post.ImageUrl;
-    document.getElementById("blog-content").textContent = textContent;
+    // Fill in the content in the page
+    const blogTitleEl = document.getElementById("blog-title");
+    const blogAuthorEl = document.getElementById("blog-author");
+    const blogDateEl = document.getElementById("blog-date");
+    const blogImageEl = document.getElementById("blog-image");
+    const blogContentEl = document.getElementById("blog-content");
+
+    if (blogTitleEl) blogTitleEl.textContent = post.Title;
+    if (blogAuthorEl) blogAuthorEl.textContent = post.Author;
+    if (blogDateEl) blogDateEl.textContent = new Date(post.postDate).toLocaleDateString();
+    if (blogImageEl) blogImageEl.src = post.ImageUrl;
+    if (blogContentEl) blogContentEl.textContent = textContent;
 
   } catch (error) {
     console.error("Error loading blog post:", error);
@@ -61,19 +67,24 @@ async function loadBlogPost() {
   }
 }
 
+// Run loadBlogPost on DOM ready
 document.addEventListener("DOMContentLoaded", loadBlogPost);
 
-
+// Toggle link visibility based on logged-in user (safe null checks)
 document.addEventListener("DOMContentLoaded", () => {
   const username = localStorage.getItem("loggedInUser");
 
+  const postBlogLink = document.getElementById("postBlogLink");
+  const postlistinglink = document.getElementById("postlistinglink");
+  const loginLink = document.getElementById("loginLink");
+
   if (username === "RobColesky") {
-    document.getElementById("postBlogLink").style.display = "inline-block";
-    document.getElementById("postlistinglink").style.display = "inline-block";
-    document.getElementById("loginLink").style.display = "none";
+    if (postBlogLink) postBlogLink.style.display = "inline-block";
+    if (postlistinglink) postlistinglink.style.display = "inline-block";
+    if (loginLink) loginLink.style.display = "none";
   } else {
-    document.getElementById("postBlogLink").style.display = "none";
-    document.getElementById("postlistinglink").style.display = "none";
-    document.getElementById("loginLink").style.display = "inline-block";
+    if (postBlogLink) postBlogLink.style.display = "none";
+    if (postlistinglink) postlistinglink.style.display = "none";
+    if (loginLink) loginLink.style.display = "inline-block";
   }
 });
