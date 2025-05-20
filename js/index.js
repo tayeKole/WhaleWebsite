@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
 import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -8,7 +7,7 @@ const firebaseConfig = {
   authDomain: "clay-to-life.firebaseapp.com",
   databaseURL: "https://clay-to-life-default-rtdb.firebaseio.com",
   projectId: "clay-to-life",
-  storageBucket: "clay-to-life.firebasestorage.app",
+  storageBucket: "clay-to-life.appspot.com",
   messagingSenderId: "88013123074",
   appId: "1:88013123074:web:c5c57cac389c14a620011b",
   measurementId: "G-EDNMGKZKY2"
@@ -16,7 +15,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
 const rtdb = getDatabase(app); // Realtime Database
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -39,25 +37,15 @@ document.addEventListener("DOMContentLoaded", () => {
   subBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById("subscriberEmail").value;
+    const email = document.getElementById("subscriberEmail").value.trim();
 
-    if (!email) {
+    if (!email || !email.includes("@")) {
       alert("Please enter a valid email address.");
       return;
     }
 
     try {
-      // 1. Send email via Firestore Email Trigger
-      await addDoc(collection(db, "mail"), {
-        to: [email],
-        message: {
-          subject: "Thanks for Subscribing!",
-          text: "You're now subscribed to Clay To Life updates.",
-          html: "<p><strong>You're now subscribed</strong> to Clay To Life updates. Stay tuned!</p>"
-        }
-      });
-
-      // 2. Save email to Realtime Database under "Subscribers/"
+      // Save email to Realtime Database under "Subscribers/"
       const subscriberRef = push(ref(rtdb, "Subscribers"));
       await set(subscriberRef, {
         email: email,
